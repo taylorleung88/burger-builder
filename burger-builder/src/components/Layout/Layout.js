@@ -1,16 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+import SideNav from '../Navigation/SideNav/SideNav';
+import Toolbar from '../Navigation/Toolbar/Toolbar';
 import classes from './Layout.module.css';
 
-const Layout = (props) => (
-    <div>
-        <div>
-            Toolbar, Sidebar, Background
-        </div>
-        <main className={classes.Content}>
-            {props.children}
-        </main>
-    </div>
+class Layout extends Component {
 
-);
+    state = {
+        showSideNav: true
+    }
+
+    sideNavClosedHandler = () => {
+        this.setState({
+            showSideNav: false
+        });
+    }
+
+    sideToggleHandler = () => {
+        this.setState((previousState) => {
+            return { showSideNav: !previousState.showSideNav };
+        });
+    }
+
+    render() {
+        return(
+            <div>
+                <Toolbar sideTogglerClicked = {this.sideToggleHandler} />
+                <SideNav closed = {this.sideNavClosedHandler}
+                     open={this.state.showSideNav} />
+                <main className={classes.Content}>
+                    {this.props.children}
+                </main>
+            </div>
+        )
+    }
+}    
 
 export default Layout;
